@@ -7,9 +7,15 @@ interface ProfileHeaderProps {
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
     return (
-        <div className="flex gap-20 mt-10 items-center">
+        <div className="flex gap-14 mt-10 items-center">
             <div>
-                <Image src={user?.profilePicture ? user.profilePicture : DisplayPicture} alt="profile-pic" width={100} height={100} />
+                <Image
+                    src={user?.profilePicture ? user.profilePicture : DisplayPicture}
+                    alt="profile-pic"
+                    width={150}
+                    height={150}
+                    className="rounded-full w-[120px] h-[120px] object-cover"
+                />
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-5 items-center">

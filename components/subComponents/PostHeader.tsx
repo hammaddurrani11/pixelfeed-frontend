@@ -28,7 +28,13 @@ const PostHeader = ({ post }: { post: any }) => {
         <div className="flex items-center justify-between py-4 w-full">
             <div className="flex gap-3 items-center">
                 <Link href={`/profile/${user}`} className="flex gap-3 items-center">
-                    <Image src={userData?.profilePicture || DisplayPicture} alt="display-picture" className="w-10 h-10 rounded-full" />
+                    <Image
+                        src={userData?.profilePicture || DisplayPicture}
+                        alt="display-picture"
+                        className="rounded-full h-10"
+                        height={40}
+                        width={40}
+                    />
                     <p className="font-medium text-sm text-black">{userData?.username}</p>
                 </Link>
             </div>
