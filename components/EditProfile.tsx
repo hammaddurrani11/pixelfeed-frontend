@@ -8,21 +8,31 @@ import { useEffect, useState } from "react"
 const EditProfile = ({ id }: { id: string }) => {
     const [userDetails, setUserDetails] = useState<any>(null);
     const { getUser, editUser } = useUser();
-    const [image, setImage] = useState<string | null>(null);
+    const [image, setImage] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
     const [formData, setFormData] = useState<any>({});
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setImage(URL.createObjectURL(file));
-            formData.append("profilePicture", file);
+            setPreview(URL.createObjectURL(file));
+            setImage(file);
         }
     };
 
     const fetchUserDetails = async () => {
         const user = await getUser(id);
         setUserDetails(user);
-        setImage(user?.profilePicture);
+        setPreview(user?.profilePicture);
+
+        setFormData({
+            username: user?.username || "",
+            bio: user?.bio || "",
+            email: user?.email || "",
+            phoneNumber: user?.phoneNumber || "",
+            gender: user?.gender || "",
+        });
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -30,12 +40,31 @@ const EditProfile = ({ id }: { id: string }) => {
             ...formData,
             [e.target.name]: e.target.value
         });
-    }
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await editUser(id, formData);
-    }
+
+        setIsLoading(true);
+
+        const data = new FormData();
+
+        Object.entries(formData).forEach(([key, value]) => {
+            data.append(key, value as string | Blob);
+        });
+
+        if (image) {
+            data.append("profilePic", image);
+        }
+
+        const res = await editUser(id, data);
+
+        if (res) {
+            console.log("Profile updated successfully!");
+        }
+
+        setIsLoading(false);
+    };
 
     useEffect(() => {
         fetchUserDetails();
@@ -49,7 +78,7 @@ const EditProfile = ({ id }: { id: string }) => {
                 <div className="flex items-center gap-6 mb-8 p-4 bg-gray-50 rounded-xl">
                     <div className="relative w-20 h-20 overflow-hidden rounded-full border border-gray-200">
                         <Image
-                            src={image ? image : DisplayPicture}
+                            src={preview ? preview : DisplayPicture}
                             alt={"Profile Picture"}
                             width={100}
                             height={100}
@@ -76,7 +105,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <input
                             type="text"
                             name="username"
-                            value={userDetails?.username}
+                            value={formData?.username}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
                         />
@@ -88,7 +117,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <input
                             type="text"
                             name="username"
-                            value={userDetails?.username}
+                            value={formData?.username}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
                         />
@@ -98,7 +127,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <label className="text-sm font-semibold text-gray-700">Bio</label>
                         <textarea
                             name="bio"
-                            value={userDetails?.bio}
+                            value={formData?.bio}
                             rows={3}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all resize-none"
@@ -111,7 +140,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <input
                             type="email"
                             name="email"
-                            value={userDetails?.email}
+                            value={formData?.email}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
                         />
@@ -122,7 +151,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <input
                             type="text"
                             name="phone_number"
-                            value={userDetails?.phoneNumber}
+                            value={formData?.phoneNumber}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
                         />
@@ -132,7 +161,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <label className="text-sm font-semibold text-gray-700">Gender</label>
                         <select
                             name="gender"
-                            value={userDetails?.gender}
+                            value={formData?.gender}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all appearance-none bg-white"
                         >
@@ -159,7 +188,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         type="submit"
                         className="bg-black hover:bg-gray-800 text-white font-semibold py-2.5 px-8 rounded-lg transition-colors cursor-pointer"
                     >
-                        Save changes
+                        {isLoading ? "Saving..." : "Save changes"}
                     </button>
                 </div>
             </form>
