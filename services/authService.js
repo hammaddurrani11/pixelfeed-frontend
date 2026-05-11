@@ -8,7 +8,12 @@ const login = async (userData) => {
     return api.post("/api/auth/login", userData);
 }
 
+const logout = async () => {
+    return api.post("/api/auth/logout");
+}
+
 export {
     register,
-    login
+    login,
+    logout
 }

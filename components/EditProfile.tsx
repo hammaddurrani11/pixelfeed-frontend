@@ -28,6 +28,7 @@ const EditProfile = ({ id }: { id: string }) => {
 
         setFormData({
             username: user?.username || "",
+            fullName: user?.fullName || "",
             bio: user?.bio || "",
             email: user?.email || "",
             phoneNumber: user?.phoneNumber || "",
@@ -101,11 +102,11 @@ const EditProfile = ({ id }: { id: string }) => {
                 </div>
                 <div className="space-y-4">
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-sm font-semibold text-gray-700">Name</label>
+                        <label className="text-sm font-semibold text-gray-700">Full Name</label>
                         <input
                             type="text"
-                            name="username"
-                            value={formData?.username}
+                            name="fullName"
+                            value={formData?.fullName}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"
                         />

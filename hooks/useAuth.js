@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { login, register } from "../services/authService";
+import { login, register, logout } from "../services/authService";
 import { useRouter } from "next/navigation";
+import { useAuthContext } from "@/context/AuthContext";
 
 export const useAuth = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { setUser } = useAuthContext();
 
     const registerUser = async (userData) => {
         try {
@@ -27,17 +29,33 @@ export const useAuth = () => {
         }
     }
 
-    const loginUser = async(userData) => {
+    const loginUser = async (userData) => {
         try {
             setLoading(true);
-            
+
             const response = await login(userData);
-            
-            if (response.data.success) {
+
+            if (response?.data?.success) {
+                setUser(response?.data?.user?._id);
                 router.push('/');
             }
         }
-        catch(error){
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    const logOutUser = async () => {
+        try {
+            setLoading(true);
+            await logout();
+            router.push('/login');
+        }
+        catch (error) {
             console.error(error);
             throw error;
         }
@@ -49,6 +67,7 @@ export const useAuth = () => {
     return {
         registerUser,
         loading,
-        loginUser
+        loginUser,
+        logOutUser
     }
 }

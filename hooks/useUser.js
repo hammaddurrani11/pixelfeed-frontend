@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getUserById, editUserProfile } from "../services/userService";
+import { getUserById, editUserProfile, getCurrentUser } from "../services/userService";
 
 export const useUser = () => {
     const [loading, setLoading] = useState(false);
@@ -36,9 +36,26 @@ export const useUser = () => {
         }
     }
 
+    const getCurrentUserDetails = async () => {
+        try {
+            setLoading(true);
+
+            const response = await getCurrentUser();
+            return response.data.user;
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
     return {
         getUser,
         loading,
-        editUser
+        editUser,
+        getCurrentUserDetails
     }
 }

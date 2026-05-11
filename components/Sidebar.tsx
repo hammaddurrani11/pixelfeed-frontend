@@ -1,8 +1,14 @@
+"use client";
+
 import { Bars, Create, Explore, Home, Logo, Messages, Notification, Profile, Reels, Search } from "@/public"
 import Image from "next/image"
 import Link from "next/link"
+import { useAuthContext } from "@/context/AuthContext"
+import { useAuth } from "@/hooks/useAuth"
 
 const Sidebar = () => {
+    const { user } = useAuthContext();
+    const { logOutUser } = useAuth();
     return (
         <div className="px-10 w-1/5 relative border-r border-gray-300">
             <div className="fixed top-0 py-16">
@@ -45,15 +51,15 @@ const Sidebar = () => {
                         <span>Create</span>
                     </Link>
 
-                    <Link href={'/'} className="flex items-center gap-5">
+                    <Link href={`/profile/${user?.id}`} className="flex items-center gap-5">
                         <Image src={Profile} alt="profile" />
                         <span>Profile</span>
                     </Link>
 
-                    <Link href={'/'} className="flex items-center gap-5">
+                    <button onClick={logOutUser} className="flex items-center gap-5 cursor-pointer">
                         <Image src={Bars} alt="bars" />
-                        <span>More</span>
-                    </Link>
+                        <span>Logout</span>
+                    </button>
                 </div>
             </div>
         </div>

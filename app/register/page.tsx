@@ -7,11 +7,12 @@ import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 
 const Register = () => {
-    const { registerUser, loading} = useAuth();
+    const { registerUser, loading } = useAuth();
 
     const [formData, setFormData] = useState({
         username: "",
         email: "",
+        fullName: "",
         password: "",
     });
 
@@ -50,6 +51,14 @@ const Register = () => {
                             name="username"
                             className="w-full border border-gray-300 rounded-md p-4"
                             placeholder="Username"
+                        />
+
+                        <input
+                            type="text"
+                            onChange={handleChange}
+                            name="fullName"
+                            className="w-full border border-gray-300 rounded-md p-4"
+                            placeholder="Full Name"
                         />
 
                         <input
