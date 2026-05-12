@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { login, register, logout } from "../services/authService";
 import { useRouter } from "next/navigation";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthStore } from "@/store/authStore";
 
 export const useAuth = () => {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const { setUser } = useAuthContext();
+    const { setUser } = useAuthStore();
 
     const registerUser = async (userData) => {
         try {
@@ -17,6 +17,7 @@ export const useAuth = () => {
             const response = await register(userData);
 
             if (response.data.success) {
+                setUser(response?.data?.user);
                 router.push('/');
             }
         }
@@ -36,7 +37,7 @@ export const useAuth = () => {
             const response = await login(userData);
 
             if (response?.data?.success) {
-                setUser(response?.data?.user?._id);
+                setUser(response?.data?.user);
                 router.push('/');
             }
         }

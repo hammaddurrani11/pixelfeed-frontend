@@ -43,8 +43,7 @@ const PostHeader = ({ post }: { post: any }) => {
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></svg>
                 </div>
                 <ul tabIndex={0} className="dropdown-content menu bg-white rounded-box z-50 w-52 p-2 shadow-lg border border-base-content/10">
-                    <li><a>Edit Post</a></li>
-                    <li><a>Delete Post</a></li>
+                    <li><Link href={`/profile/${user}`}>Visit Profile</Link></li>
                 </ul>
             </div>
         </div>

@@ -151,7 +151,7 @@ const EditProfile = ({ id }: { id: string }) => {
                         <label className="text-sm font-semibold text-gray-700">Phone number</label>
                         <input
                             type="text"
-                            name="phone_number"
+                            name="phoneNumber"
                             value={formData?.phoneNumber}
                             onChange={handleChange}
                             className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition-all"

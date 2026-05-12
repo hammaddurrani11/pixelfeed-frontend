@@ -3,12 +3,13 @@
 import { Bars, Create, Explore, Home, Logo, Messages, Notification, Profile, Reels, Search } from "@/public"
 import Image from "next/image"
 import Link from "next/link"
-import { useAuthContext } from "@/context/AuthContext"
 import { useAuth } from "@/hooks/useAuth"
+import { useAuthStore } from "@/store/authStore";
 
 const Sidebar = () => {
-    const { user } = useAuthContext();
     const { logOutUser } = useAuth();
+    const user = useAuthStore((state) => state.user);
+
     return (
         <div className="px-10 w-1/5 relative border-r border-gray-300">
             <div className="fixed top-0 py-16">
@@ -51,7 +52,7 @@ const Sidebar = () => {
                         <span>Create</span>
                     </Link>
 
-                    <Link href={`/profile/${user?.id}`} className="flex items-center gap-5">
+                    <Link href={`/profile/${user?._id}`} className="flex items-center gap-5">
                         <Image src={Profile} alt="profile" />
                         <span>Profile</span>
                     </Link>

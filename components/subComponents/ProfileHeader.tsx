@@ -1,15 +1,15 @@
 import Image from "next/image"
 import { DisplayPicture } from "@/public"
-import { useAuthContext } from "@/context/AuthContext";
 import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
 
 interface ProfileHeaderProps {
     user: any;
 }
 
 const ProfileHeader = ({ user }: ProfileHeaderProps) => {
-    const { user: currentUser } = useAuthContext();
-    const isProfileOwner = currentUser?.id === user?._id;
+    const currentUser = useAuthStore((state) => state.user);
+    const isProfileOwner = currentUser?._id === user?._id;
 
     return (
         <div className="flex gap-14 mt-10 items-center">
@@ -25,7 +25,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
             <div className="flex flex-col gap-2">
                 <div className="flex flex-row gap-5 items-center">
                     <h4>{user?.username}</h4>
-                    {isProfileOwner && <Link href={`/edit-profile/${currentUser?.id}`} className="bg-[#EFEFEF] p-2 rounded-md text-sm font-semibold cursor-pointer">Edit Profile</Link>}
+                    {isProfileOwner && <Link href={`/edit-profile/${currentUser?._id}`} className="bg-[#EFEFEF] p-2 rounded-md text-sm font-semibold cursor-pointer">Edit Profile</Link>}
                 </div>
                 <div className="flex flex-row gap-5">
                     <h4><span className="font-semibold">10</span> posts</h4>
