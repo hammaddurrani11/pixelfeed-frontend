@@ -1,20 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import PostHeader from "./subComponents/PostHeader";
 import { LikeIcon, CommentIcon, ShareIcon, SaveIcon, DisplayPicture } from "@/public";
 import { useUser } from "@/hooks/useUser";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
+import { usePost } from "@/hooks/usePost";
 
 const PostModal = ({ post, onClose }: { post: any; onClose: () => void }) => {
-    const { getUser } = useUser();
     const [userData, setUserData] = useState<any>(null);
     const user = useAuthStore((state) => state.user);
 
+    const { getUser } = useUser();
+    const { handleDeletePost } = usePost();
+
     const isMyPost = user?._id === post?.user;
-    console.log("isMyPost: ", isMyPost);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -34,6 +35,14 @@ const PostModal = ({ post, onClose }: { post: any; onClose: () => void }) => {
         }
     };
 
+    const DeletePostHandler = async (id: String) => {
+        try {
+            await handleDeletePost(id);
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
@@ -97,13 +106,23 @@ const PostModal = ({ post, onClose }: { post: any; onClose: () => void }) => {
                                 </Link>
                             </div>
                             <div className="dropdown dropdown-end">
-                                <div tabIndex={0} role="button" className="cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></svg>
-                                </div>
-                                <ul tabIndex={0} className="dropdown-content menu cursor-pointer bg-white rounded-box z-50 w-52 p-2 shadow-lg border border-base-content/10">
-                                    <li className="hover:bg-black text-black hover:text-white px-2 py-1 rounded-sm">Edit Post</li>
-                                    <li className="hover:bg-black text-black hover:text-white px-2 py-1 rounded-sm">Delete Post</li>
-                                </ul>
+                                {isMyPost && (
+                                    <div>
+                                        <div tabIndex={0} role="button" className="cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" /></svg>
+                                        </div>
+
+
+                                        <ul tabIndex={0} className="dropdown-content menu cursor-pointer bg-white rounded-box z-50 w-52 p-2 shadow-lg border border-base-content/10">
+                                            <li 
+                                            className="hover:bg-black text-black hover:text-white px-2 py-1 rounded-sm">
+                                                <Link href={`/edit-post/${post._id}`} className="p-0">Edit Post</Link></li>
+                                            <li 
+                                            className="hover:bg-black text-black hover:text-white px-2 py-1 rounded-sm" 
+                                            onClick={() => DeletePostHandler(post._id)}>Delete Post</li>
+                                        </ul>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

@@ -5,9 +5,10 @@ import { useAuthStore } from "@/store/authStore";
 
 interface ProfileHeaderProps {
     user: any;
+    post: any[]
 }
 
-const ProfileHeader = ({ user }: ProfileHeaderProps) => {
+const ProfileHeader = ({ user, post }: ProfileHeaderProps) => {
     const currentUser = useAuthStore((state) => state.user);
     const isProfileOwner = currentUser?._id === user?._id;
 
@@ -28,7 +29,7 @@ const ProfileHeader = ({ user }: ProfileHeaderProps) => {
                     {isProfileOwner && <Link href={`/edit-profile/${currentUser?._id}`} className="bg-[#EFEFEF] p-2 rounded-md text-sm font-semibold cursor-pointer">Edit Profile</Link>}
                 </div>
                 <div className="flex flex-row gap-5">
-                    <h4><span className="font-semibold">10</span> posts</h4>
+                    <h4><span className="font-semibold">{post?.length || 0}</span> posts</h4>
                     <h4><span className="font-semibold">100</span> followers</h4>
                     <h4><span className="font-semibold">100</span> following</h4>
                 </div>

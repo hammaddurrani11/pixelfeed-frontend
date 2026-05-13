@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createPost, getAllPost, getUserPost } from "../services/postService";
+import { createPost, getAllPost, getUserPost, getPostById, editPost, deletePost } from "../services/postService";
 import { useRouter } from "next/navigation";
 
 export const usePost = () => {
@@ -57,10 +57,70 @@ export const usePost = () => {
         }
     }
 
+    const handleGetPostById = async (postId) => {
+        try {
+            setLoading(true);
+
+            const response = await getPostById(postId);
+            return response.data.post;
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    const handleEditPost = async (postId, data) => {
+        try {
+            setLoading(true);
+
+            const response = await editPost(postId, data);
+
+            if (response.data.success) {
+                router.push('/');
+            }
+
+            return response.data.post;
+
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    const handleDeletePost = async (postId) => {
+        try {
+            setLoading(true);
+
+            const response = await deletePost(postId);
+
+            if (response.data.success) {
+                router.push('/');
+            }
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
     return {
         handleCreatePost,
         loading,
         handleGetAllPost,
-        handleGetUserPost
+        handleGetUserPost,
+        handleGetPostById,
+        handleEditPost,
+        handleDeletePost
     }
 }

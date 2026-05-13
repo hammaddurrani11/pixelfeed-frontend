@@ -16,6 +16,13 @@ const AllPosts = ({ posts }: { posts: any[] }) => {
 
     return (
         <div className="grid grid-cols-3 gap-0 mb-10">
+
+            {posts.length === 0 && (
+                <div className="col-span-3 text-center">
+                    <p className="text-gray-500">No posts found</p>
+                </div>
+            )}
+            
             {posts?.map((post, idx) => (
                 <Image
                     src={post.picture}

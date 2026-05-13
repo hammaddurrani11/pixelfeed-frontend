@@ -9,7 +9,7 @@ interface ProfileProps {
 const Profile = ({ posts, user }: ProfileProps) => {
     return (
         <div className="w-2/3 mx-auto">
-            <ProfileHeader user={user} />
+            <ProfileHeader user={user} post={posts} />
             <ProfileContent posts={posts} />
         </div>
     )

@@ -53,7 +53,7 @@ const Sidebar = () => {
                     </Link>
 
                     <Link href={`/profile/${user?._id}`} className="flex items-center gap-5">
-                        <Image src={Profile} alt="profile" />
+                        <Image src={user?.profilePicture || Profile} width={30} height={30} alt="profile" className="rounded-full object-cover" />
                         <span>Profile</span>
                     </Link>
 
