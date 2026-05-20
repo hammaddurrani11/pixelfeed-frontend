@@ -24,11 +24,21 @@ const deletePost = async (postId) => {
     return api.delete(`/api/post/${postId}`);
 }
 
+const likePost = async (postId) => {
+    return api.post(`/api/post/${postId}/like`);
+}
+
+const commentPost = async (postId, comment) => {
+    return api.post(`/api/post/${postId}/comment`, { comment });
+}
+
 export {
     createPost,
     getAllPost,
     getUserPost,
     getPostById,
     editPost,
-    deletePost
+    deletePost,
+    likePost,
+    commentPost
 }

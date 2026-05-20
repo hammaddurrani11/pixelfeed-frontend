@@ -1,5 +1,16 @@
 import { useState } from "react";
-import { createPost, getAllPost, getUserPost, getPostById, editPost, deletePost } from "../services/postService";
+
+import {
+    createPost,
+    getAllPost,
+    getUserPost,
+    getPostById,
+    editPost,
+    deletePost,
+    likePost,
+    commentPost
+} from "../services/postService";
+
 import { useRouter } from "next/navigation";
 
 export const usePost = () => {
@@ -114,6 +125,40 @@ export const usePost = () => {
         }
     }
 
+    const handleLikePost = async (postId) => {
+        try {
+            setLoading(true);
+
+            const response = await likePost(postId);
+
+            return response.data.post;
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
+    const handleCommentPost = async (postId) => {
+        try {
+            setLoading(true);
+
+            const response = await commentPost(postId);
+
+            return response.data.post;
+        }
+        catch (error) {
+            console.error(error);
+            throw error;
+        }
+        finally {
+            setLoading(false);
+        }
+    }
+
     return {
         handleCreatePost,
         loading,
@@ -121,6 +166,8 @@ export const usePost = () => {
         handleGetUserPost,
         handleGetPostById,
         handleEditPost,
-        handleDeletePost
+        handleDeletePost,
+        handleLikePost,
+        handleCommentPost
     }
 }

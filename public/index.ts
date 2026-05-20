@@ -13,6 +13,7 @@ import DisplayPicture from './Default_pfp.svg.png';
 import PostImage from './post-image.png';
 
 import LikeIcon from './icons/like.png';
+import LikedIcon from './icons/liked.png'
 import CommentIcon from './icons/comment.png';
 import SaveIcon from './icons/save.png';
 import ShareIcon from './icons/share.png';
@@ -36,5 +37,6 @@ export {
     CommentIcon,
     SaveIcon,
     ShareIcon,
-    LoginImage
+    LoginImage,
+    LikedIcon
 }
